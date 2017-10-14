@@ -1,0 +1,32 @@
+{
+  "name": "nest-passport",
+  "version": "1.0.0",
+  "description": "Nest passport example",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "start:watch": "nodemon",
+    "prestart:prod": "tsc",
+    "start:prod": "node dist/server.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^4.1.1",
+    "@nestjs/core": "^4.1.1",
+    "@nestjs/microservices": "^4.1.0",
+    "@nestjs/testing": "^4.1.0",
+    "@nestjs/websockets": "^4.1.0",
+    "body-parser": "^1.18.2",
+    "jsonwebtoken": "^8.1.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.0",
+    "passport-local": "^1.0.0",
+    "reflect-metadata": "^0.1.10",
+    "rxjs": "^5.4.3",
+    "typescript": "^2.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.34",
+    "nodemon": "^1.12.1",
+    "ts-node": "^3.3.0"
+  }
+}
