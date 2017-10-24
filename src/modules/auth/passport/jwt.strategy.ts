@@ -13,15 +13,15 @@ export class JwtStrategy extends Strategy {
         secretOrKey: 'secret',
       },
       async (req, payload, next) => await this.verify(req, payload, next)
-    );
-    passport.use(this);
+    )
+    passport.use(this)
   }
 
   public async verify(req, payload, done) {
-    const signedUser = await this.authService.validateUser(payload);
-    if (!signedUser) {
-      return done('Unauthorized', false);
+    const signedUser = await this.authService.validateUser(payload)
+    if (typeof(signedUser) == 'undefined') {
+      return done('Unauthorized', false)
     }
-    done(null, signedUser);
+    done(null, signedUser)
   }
 }

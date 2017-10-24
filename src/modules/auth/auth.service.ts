@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { Component, Inject } from '@nestjs/common';
 import { HttpException } from '@nestjs/core';
-import {UserService } from '../user/user.service'
+import { UserService } from '../user/user.service'
 import { User } from '../user/user.interface';
 
 @Component()

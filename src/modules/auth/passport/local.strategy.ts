@@ -18,17 +18,15 @@ export class LocalStrategy extends Strategy {
 
   public async logIn(email, password, done) {
     const user = await this.userService.findByEmail(email)
-    .then(user=>{
-      if(password != user.password){
-        console.log('Invalid Password')
-        return done(null, false)
+    .then(user=> {
+      if (password != user.password) {
+        return done('Invalid Password', false)
       } else {
         return done(null, user);
       }
     })
     .catch(err=> {
-      console.log(err)
-      done(null, false)
+      done(err, false)
     })
   }
 
