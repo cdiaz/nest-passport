@@ -1,7 +1,6 @@
 import * as passport from "passport";
-import { Middleware, NestMiddleware, ExpressMiddleware } from '@nestjs/common';
+import { Middleware, NestMiddleware, HttpException, ExpressMiddleware } from '@nestjs/common';
 import { NextFunction } from 'express'
-import { HttpException } from '@nestjs/core'
 
 @Middleware()
 export class JwtMiddleware implements NestMiddleware {

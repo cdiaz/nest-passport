@@ -10,7 +10,7 @@ import { UserModule } from '../user/user.module';
 @Module({
   components: [AuthService, JwtStrategy, LocalStrategy],
   controllers: [AuthController],
-  modules: [UserModule]
+  imports: [UserModule]
 })
 
 export class AuthModule implements NestModule {

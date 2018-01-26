@@ -17,7 +17,7 @@ export class LocalStrategy extends Strategy {
   }
 
   public async logIn(email, password, done) {
-    const user = await this.userService.findByEmail(email)
+    const user = await this.userService.findOne({email: email})
     .then(user=> {
       if (password != user.password) {
         return done('Invalid Password', false)
