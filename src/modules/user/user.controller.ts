@@ -2,6 +2,7 @@ import { Controller, Post, Res, Body, Param, HttpStatus, HttpCode, Get } from '@
 import { UserService } from './user.service';
 import { IUser } from './user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 
 @Controller('user')
 export class UserController {
@@ -10,7 +11,7 @@ export class UserController {
   ){}
 
   @Post()
-  async create(@Body() user:CreateUserDto) {
+  async create(@Body(new ValidationPipe()) user:CreateUserDto) {
     return this.userService.create(user);
   }
 
