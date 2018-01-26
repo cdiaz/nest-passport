@@ -1,6 +1,6 @@
 import * as passport from 'passport';
 import { Module, NestModule, MiddlewaresConsumer, RequestMethod } from '@nestjs/common';
-import { LogInMiddleware } from '../auth/auth.middleware';
+import { LogInMiddleware } from '../auth/middlewares/login.middleware';
 import { JwtStrategy } from './passport/jwt.strategy';
 import { LocalStrategy } from './passport/local.strategy';
 import { AuthService } from './auth.service';
@@ -15,6 +15,8 @@ import { UserModule } from '../user/user.module';
 
 export class AuthModule implements NestModule {
   public configure(consumer: MiddlewaresConsumer) {
-    consumer.apply(LogInMiddleware).forRoutes(AuthController)
+    consumer.apply(LogInMiddleware).forRoutes(
+      { path: '/auth/login', method: RequestMethod.POST }
+    )
   }
 }
