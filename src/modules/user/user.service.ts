@@ -1,12 +1,23 @@
 import { Component, Inject, HttpStatus, HttpException } from '@nestjs/common';
 import { User } from './user.model';
 import { IUser } from './user.interface';
+import { CreateUserDto } from './dto/create-user.dto'
 
 @Component()
 export class UserService {
   constructor(
     @Inject('UserRepository') private readonly userRepository: typeof User
   ) {}
+
+  public create(user: CreateUserDto) {
+    return new User(user).save()
+    .then(user=>
+      Promise.resolve(user)
+    )
+    .catch(err=>
+      Promise.reject(new HttpException(err.toString(), HttpStatus.FORBIDDEN))
+    )
+  }
   
   public async findAll(): Promise<IUser[]>{
     return await User.find<User>().all();
@@ -19,16 +30,6 @@ export class UserService {
     } else {
       throw new HttpException("User not found", HttpStatus.FORBIDDEN)
     }
-  }
-
-  public create(user: User) {
-    return new User(user).save()
-    .then(user=>
-      Promise.resolve(user)
-    )
-    .catch(err=>
-      Promise.reject(new HttpException(err.toString(), HttpStatus.FORBIDDEN))
-    )
   }
 
 }
