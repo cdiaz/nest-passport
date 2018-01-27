@@ -1,5 +1,5 @@
 import * as passport from "passport";
-import { Middleware, NestMiddleware, HttpException } from '@nestjs/common';
+import { Middleware, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 
 @Middleware()
 export class LogInMiddleware implements NestMiddleware {
@@ -7,9 +7,9 @@ export class LogInMiddleware implements NestMiddleware {
     return async (req, res, next) => {
       return await passport.authenticate('local', {session: false}, (err, user, info) => {
         if (typeof info != 'undefined') {
-          next(new HttpException(info.message, 401))
+          next(new UnauthorizedException(info.message))
         } else if (err) {
-          next(new HttpException(err, 401))
+          next(err)
         } else {
           req.user = user
           next()

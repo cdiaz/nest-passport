@@ -1,5 +1,5 @@
 import * as passport from "passport";
-import { Middleware, NestMiddleware, HttpException } from '@nestjs/common';
+import { Middleware, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 
 @Middleware()
 export class JwtMiddleware implements NestMiddleware {
@@ -9,7 +9,7 @@ export class JwtMiddleware implements NestMiddleware {
     return async (req, res, next) => {
       return await passport.authenticate('jwt', { session: false }, (err, user, info) => {
         if(err){
-            next(new HttpException(err, 401))
+          next(new UnauthorizedException(err))
         } else if (typeof info != 'undefined') {
           switch (info.message) {
             case 'No auth token':
@@ -21,7 +21,7 @@ export class JwtMiddleware implements NestMiddleware {
               message = "Your session has expired. Please log in again"
               break
           }
-            next(new HttpException(message, 401))
+            next(new UnauthorizedException(message))
         } else {
           next()
         }

@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { Component, Inject, HttpException } from '@nestjs/common';
+import { Component, Inject, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service'
 import { IUser } from '../user/user.interface';
 
@@ -21,11 +21,7 @@ export class AuthService {
   }
 
   async validateUser(payload): Promise<IUser> {
-    const user = await this.userservice.findOne({_id: payload.sub});
-    if(!user){
-      throw new HttpException('Invalid authorization', 404)
-    }
-    return user
+    return await this.userservice.findOne({_id: payload.sub})
   }
   
 }

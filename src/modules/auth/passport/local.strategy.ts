@@ -1,6 +1,6 @@
 import * as passport from 'passport';
 import { Strategy } from 'passport-local';
-import { Component, Inject } from '@nestjs/common';
+import { Component, Inject, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../../user/user.service';
 
 @Component()
@@ -20,7 +20,7 @@ export class LocalStrategy extends Strategy {
     const user = await this.userService.findOne({email: email})
     .then(user=> {
       if (password != user.password) {
-        return done('Invalid Password', false)
+        return Promise.reject(new UnauthorizedException('Invalid password') )
       } else {
         return done(null, user);
       }

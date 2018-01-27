@@ -1,4 +1,4 @@
-import { Component, Inject, HttpStatus, HttpException } from '@nestjs/common';
+import { Component, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
 import { User } from './user.model';
 import { IUser } from './user.interface';
 import { CreateUserDto } from './dto/create-user.dto'
@@ -15,7 +15,9 @@ export class UserService {
       Promise.resolve(user)
     )
     .catch(err=>
-      Promise.reject(new HttpException(err.toString(), HttpStatus.FORBIDDEN))
+      Promise.reject(
+        new BadRequestException(err.toString())
+      )
     )
   }
   
@@ -24,12 +26,13 @@ export class UserService {
   }
 
   public async findOne(params): Promise<IUser> {
-    const user = await User.find<User>(params).first();
-    if(user) {
-      return Promise.resolve(user)
-    } else {
-      throw new HttpException("User not found", HttpStatus.FORBIDDEN)
-    }
+    return await User.find<User>(params).first()
+    .then(user=>{
+      return (user) 
+      ? Promise.resolve(user) 
+      : Promise.reject(new NotFoundException('User not exist'))
+    })
+    .catch(err=> Promise.reject(err))
   }
 
 }

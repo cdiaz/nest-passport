@@ -18,10 +18,14 @@ export class JwtStrategy extends Strategy {
   }
 
   public async verify(req, payload, done) {
-    const signedUser = await this.authService.validateUser(payload)
-    if (typeof(signedUser) == 'undefined') {
-      return done('Unauthorized', false)
-    }
-    done(null, signedUser)
+    return await this.authService.validateUser(payload)
+    .then(signedUser=>
+      Promise.resolve(
+        done(null, signedUser)
+      )
+    )
+    .catch(err=>
+      done('Invalid authorization', false)
+    )
   }
 }
