@@ -5,9 +5,6 @@ import { CreateUserDto } from './dto/create-user.dto'
 
 @Component()
 export class UserService {
-  constructor(
-    @Inject('UserRepository') private readonly userRepository: typeof User
-  ) {}
 
   public create(user: CreateUserDto) {
     return new User(user).save()
