@@ -1,4 +1,5 @@
 import { Component, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { User } from './user.model';
 import { IUser } from './user.interface';
 import { CreateUserDto } from './dto/create-user.dto'
@@ -6,15 +7,12 @@ import { CreateUserDto } from './dto/create-user.dto'
 @Component()
 export class UserService {
 
-  public create(user: CreateUserDto) {
+  public async create(user: CreateUserDto) {
+    user.password = await bcrypt.hash(user.password, 10);
     return new User(user).save()
-    .then(user=>
-      Promise.resolve(user)
-    )
+    .then(user=>Promise.resolve(user))
     .catch(err=>
-      Promise.reject(
-        new BadRequestException(err.toString())
-      )
+      Promise.reject(new BadRequestException(err.toString()))
     )
   }
   

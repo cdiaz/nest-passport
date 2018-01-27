@@ -1,4 +1,5 @@
 import * as passport from 'passport';
+import * as bcrypt from 'bcrypt';
 import { Strategy } from 'passport-local';
 import { Component, Inject, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../../user/user.service';
@@ -17,13 +18,15 @@ export class LocalStrategy extends Strategy {
   }
 
   public async logIn(email, password, done) {
-    const user = await this.userService.findOne({email: email})
-    .then(user=> {
-      if (password != user.password) {
-        return Promise.reject(new UnauthorizedException('Invalid password') )
-      } else {
-        return done(null, user);
-      }
+    await this.userService.findOne({email: email})
+    .then(async user=> {
+      await bcrypt.compare(password, user.password)
+      .then(isValid=> {
+        return (isValid) 
+        ? done(null, user) 
+        : Promise.reject('Invalid password')
+      })
+      .catch(err=> Promise.reject(new UnauthorizedException(err.toString())))
     })
     .catch(err=> {
       done(err, false)

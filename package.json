@@ -15,6 +15,7 @@
     "@nestjs/microservices": "^4.5.8",
     "@nestjs/testing": "^4.5.5",
     "@nestjs/websockets": "^4.5.8",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "fusedb": "^1.0.7",
     "jsonwebtoken": "^8.1.0",

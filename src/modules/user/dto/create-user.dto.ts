@@ -11,5 +11,5 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()	
-  readonly password: string;
+  public password: string;
 }
