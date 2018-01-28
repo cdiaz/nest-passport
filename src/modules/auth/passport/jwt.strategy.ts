@@ -1,20 +1,18 @@
 import * as passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Component, Inject } from '@nestjs/common';
-import { AuthService } from '../auth.service';
-import { UserService } from '../../user/user.service'
+import { UserService } from '../../user/user.service';
 
 @Component()
 export class JwtStrategy extends Strategy {
   constructor(
-    private readonly authService: AuthService,
     private readonly userService: UserService
   ) {
     super(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         passReqToCallback: true,
-        secretOrKey: 'secret',
+        secretOrKey: process.env.SECRET_KEY,
       },
       async (req, payload, next) => await this.verify(req, payload, next)
     )

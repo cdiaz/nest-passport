@@ -5,7 +5,7 @@ import { Component, Inject, UnauthorizedException } from '@nestjs/common';
 export class AuthService {
   
   public async createToken(signedUser) {
-    const expiresIn = 60 * 60, secretOrKey = 'secret';
+    const expiresIn = process.env.JWT_EXPIRATION, secretOrKey = process.env.SECRET_KEY;
     const user = { sub: signedUser._id, email: signedUser.email };
     const token = jwt.sign(user, secretOrKey, { expiresIn });
     return {

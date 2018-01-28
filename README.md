@@ -4,8 +4,16 @@ The [Nest](https://github.com/kamilmysliwiec/nest) framework + Passport.
 
 ## Installation
 
+Install dependencies :
+
 ```
 $ npm install
+```
+
+Create .env file :
+
+```
+cp .env.example .env
 ```
 
 ## Start

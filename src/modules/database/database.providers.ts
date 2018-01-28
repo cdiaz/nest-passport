@@ -1,13 +1,14 @@
-import { FuseDB, FileAdapter } from "fusedb"
+import { FuseDB, FileAdapter } from "fusedb";
+import {DB_CONNECTION_TOKEN} from "../../constants";
 
 export const databaseProviders = [
   {
-    provide: 'DbConnectionToken',
+    provide: DB_CONNECTION_TOKEN,
     useFactory: async () => {
       const dbConnection = FuseDB.setup({ 
         adapter : FileAdapter({
-          path: "./database",
-          database: "store" 
+          path: process.env.FUSEDB_PATH,
+          database: process.env.FUSEDB_DATABASE 
         }) 
       });
       return dbConnection;
