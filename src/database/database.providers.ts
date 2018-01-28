@@ -1,5 +1,5 @@
 import { FuseDB, FileAdapter } from "fusedb";
-import {DB_CONNECTION_TOKEN} from "../../constants";
+import {DB_CONNECTION_TOKEN} from "../common/constants";
 
 export const databaseProviders = [
   {

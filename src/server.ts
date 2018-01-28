@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser';
 import { NestFactory } from '@nestjs/core';
-import { ApplicationModule } from './modules/app.module';
+import { ApplicationModule } from './app.module';
 import 'dotenv/config'
 
 async function bootstrap() {
