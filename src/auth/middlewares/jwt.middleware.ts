@@ -23,6 +23,7 @@ export class JwtMiddleware implements NestMiddleware {
           }
             next(new UnauthorizedException(message))
         } else {
+          req.user = user;
           next()
         }
       })(req, res, next)
