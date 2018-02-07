@@ -16,8 +16,10 @@ export class User extends Model<User> {
     public password: string;
 
     @Field()
+    @Validate({enum: UserRole})
     public role: UserRole;
 
     @Field()
+    @Validate({enum: UserStatus})
     public status: UserStatus;
 }
