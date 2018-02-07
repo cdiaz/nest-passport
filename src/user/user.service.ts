@@ -55,7 +55,7 @@ export class UserService {
     return await this.findOne(params)
     .then(
       user => user.remove()
-      .then(Promise.resolve({message: 'user has been deleted'})
+      .then(() => Promise.resolve({message: 'user has been deleted'})
       )
     )
   }
