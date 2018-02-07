@@ -1,5 +1,5 @@
 import { Component, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { User } from './user.model';
 import { IUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,10 +8,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
 
   public async create(user: CreateUserDto) {
-    user.password = await bcrypt.hash(user.password, 10);
     return new User(user).save()
-    .then(user=>Promise.resolve(user))
-    .catch(err=>
+    .then(user => Promise.resolve(user))
+    .catch(err =>
       Promise.reject(new BadRequestException(err.toString()))
     )
   }
@@ -36,11 +35,13 @@ export class UserService {
       async user => {
         user.name = payload.name;
         user.email = payload.email;
-        user.password = (await bcrypt.compare(payload.password, user.password))
+        //put this in a pre-save hook if you use Mongoose or BeforeInsert if use TypeOrm
+        user.password = (await compare(payload.password, user.password))
         ? user.password
-        : await bcrypt.hash(payload.password, 10)
+        : await hash(payload.password, 10)
+        //
         return user.save()
-        .then(
+        .then(() =>
           Promise.resolve({ message: 'user has been updated'})
         )
         .catch(

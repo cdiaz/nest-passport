@@ -1,6 +1,6 @@
 import { Controller, Get, Put, Req, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { IUser } from './user.interface';
+import { IUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 
 import { ValidationPipe } from '../common/pipes/validation.pipe';
