@@ -1,19 +1,20 @@
-import { hash, compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Component, Inject, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service'
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserRole, UserStatus } from '../user/enum'
+import { CryptographerService } from './cryptographer.service';
 
 @Component()
 export class AuthService {
 
   constructor( 
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly cryptoService: CryptographerService
   ){}
   
   public async signUp(user: CreateUserDto) {
-    user['password'] = await hash(user.password, 10);
+    user['password'] = await this.cryptoService.hashPassword(user.password);
     user['role'] = UserRole.USER
     user['status'] = UserStatus.PENDING
     return this.userService.create(user)
@@ -26,13 +27,9 @@ export class AuthService {
   public async logIn(email, password, done) {
     await this.userService.findOne({email: email})
     .then(async user => {
-      await compare(password, user.password)
-      .then(isValid => {
-        return (isValid) 
-        ? done(null, user) 
-        : Promise.reject('Invalid password')
-      })
-      .catch(err => Promise.reject(new UnauthorizedException(err.toString())))
+      return await this.cryptoService.checkPassword(user.password, password)
+      ? done(null, user)
+      : Promise.reject(new UnauthorizedException('Invalid password')) 
     })
     .catch(err => {
       done(err, false)

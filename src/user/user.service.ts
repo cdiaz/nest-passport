@@ -1,11 +1,15 @@
 import { Component, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
-import { hash, compare } from 'bcrypt';
 import { User } from './user.model';
 import { IUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+import { CryptographerService } from '../auth/cryptographer.service';
 
 @Component()
 export class UserService {
+
+  constructor(
+    private readonly cryptoService: CryptographerService,
+  ){}
 
   public async create(user: CreateUserDto) {
     return new User(user).save()
@@ -36,9 +40,9 @@ export class UserService {
         user.name = payload.name;
         user.email = payload.email;
         //put this in a pre-save hook if you use Mongoose or BeforeInsert if use TypeOrm
-        user.password = (await compare(payload.password, user.password))
+        user.password = (await this.cryptoService.checkPassword(user.password, payload.password))
         ? user.password
-        : await hash(payload.password, 10)
+        : await this.cryptoService.hashPassword(payload.password)
         //
         return user.save()
         .then(() =>
