@@ -5,9 +5,9 @@ import { Middleware, NestMiddleware, UnauthorizedException } from '@nestjs/commo
 export class JwtMiddleware implements NestMiddleware {
 
   public resolve() {
-    let message
     return async (req, res, next) => {
       return await passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        let message
         if(err){
           next(new UnauthorizedException(err))
         } else if (typeof info != 'undefined') {
