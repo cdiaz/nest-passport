@@ -1,8 +1,8 @@
 import { pbkdf2Sync, randomBytes } from 'crypto';
-import { Component } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common'
 
-@Component()
+@Injectable()
 export class CryptographerService {
 
   private getHash(password, salt) {

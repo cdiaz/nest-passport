@@ -1,21 +1,18 @@
-import { Module, NestModule, MiddlewaresConsumer, RequestMethod } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { ProfileController } from './profile.controller';
 import { UserService } from './user.service';
 import { JwtMiddleware } from '../auth/middlewares/jwt.middleware';
+import { CryptographerService } from '../auth/cryptographer.service';
 
 @Module({
-  components: [UserService],
   controllers: [UserController, ProfileController],
+  providers: [UserService, CryptographerService],
   exports:[UserService]
 })
 
 export class UserModule  {
-  public configure(consumer: MiddlewaresConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes(
-      { path: '/user', method: RequestMethod.GET },
-      { path: '/user/:id', method: RequestMethod.ALL },
-      { path: '/profile', method: RequestMethod.ALL }
-    );
+  public configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JwtMiddleware).forRoutes('/user');
   }
 }

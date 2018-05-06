@@ -1,10 +1,10 @@
-import { Component, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, BadRequestException } from '@nestjs/common';
 import { User } from './user.model';
 import { IUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CryptographerService } from '../auth/cryptographer.service';
 
-@Component()
+@Injectable()
 export class UserService {
 
   constructor(

@@ -1,11 +1,11 @@
 import { sign } from 'jsonwebtoken';
-import { Component, Inject, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service'
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserRole, UserStatus } from '../user/enum'
 import { CryptographerService } from './cryptographer.service';
 
-@Component()
+@Injectable()
 export class AuthService {
 
   constructor( 

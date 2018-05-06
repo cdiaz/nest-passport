@@ -4,33 +4,31 @@
   "description": "Nest passport example",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
+    "start": "ts-node -r tsconfig-paths/register src/server.ts",
     "start:watch": "nodemon",
     "prestart:prod": "tsc",
     "start:prod": "node dist/server.js"
   },
   "dependencies": {
-    "@nest-modules/mailer": "^0.1.3",
-    "@nestjs/common": "^4.5.9",
-    "@nestjs/core": "^4.5.10",
-    "@nestjs/microservices": "^4.5.8",
-    "@nestjs/testing": "^4.5.5",
-    "@nestjs/websockets": "^4.5.8",
+    "@nest-modules/mailer": "^0.2.1",
+    "@nestjs/common": "^5.0.0-rc.2",
+    "@nestjs/core": "^5.0.0-rc.2",
     "body-parser": "^1.18.2",
-    "dotenv": "^4.0.0",
+    "dotenv": "^5.0.1",
     "fusedb": "^1.0.8",
     "jsonwebtoken": "^8.1.1",
     "passport": "^0.4.0",
-    "passport-jwt": "^3.0.1",
+    "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "redis": "^2.8.0",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.6",
+    "rxjs": "^6.1.0",
     "typescript": "^2.7.1"
   },
   "devDependencies": {
-    "@types/node": "^8.0.34",
+    "@types/node": "^10.0.4",
     "nodemon": "^1.14.12",
-    "ts-node": "^4.1.0"
+    "ts-node": "^6.0.3",
+    "tsconfig-paths": "^3.3.1"
   }
 }
