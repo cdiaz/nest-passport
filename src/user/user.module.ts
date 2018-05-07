@@ -1,8 +1,7 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { ProfileController } from './profile.controller';
 import { UserService } from './user.service';
-import { JwtMiddleware } from '../auth/middlewares/jwt.middleware';
 import { CryptographerService } from '../auth/cryptographer.service';
 
 @Module({
@@ -11,8 +10,4 @@ import { CryptographerService } from '../auth/cryptographer.service';
   exports:[UserService]
 })
 
-export class UserModule  {
-  public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes('/user');
-  }
-}
+export class UserModule { }

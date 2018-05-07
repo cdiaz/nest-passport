@@ -28,9 +28,9 @@ export class UserService {
     .then(user => {
       return (user) 
       ? Promise.resolve(user) 
-      : Promise.reject(new NotFoundException('User not exist'))
+      : Promise.reject('User not exist')
     })
-    .catch(err => Promise.reject(err))
+    .catch(err => Promise.reject(new NotFoundException(err)))
   }
 
   public async update(id: string, payload: CreateUserDto) {

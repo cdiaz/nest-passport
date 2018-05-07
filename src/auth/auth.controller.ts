@@ -1,7 +1,9 @@
-import { Controller, Post, Req, Body, HttpStatus, HttpCode, Get } from '@nestjs/common';
+import { Controller, Post, Req, Body, HttpStatus, HttpCode, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { AuthGuard } from '@nestjs/passport';
+import { callback } from './passport/local.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -13,6 +15,7 @@ export class AuthController {
   }
   
   @Post('login')
+  @UseGuards(AuthGuard('local', {session: false, callback}))
   @HttpCode(HttpStatus.OK)
   public async login(@Req() req) {
     return await this.authService.createToken(req.user);

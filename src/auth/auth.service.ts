@@ -24,29 +24,26 @@ export class AuthService {
     })
   }
 
-  public async logIn(email, password, done) {
-    await this.userService.findOne({email: email})
+  public async logIn(email, password) {
+    return await this.userService.findOne({email: email})
     .then(async user => {
       return await this.cryptoService.checkPassword(user.password, password)
-      ? done(null, user)
-      : Promise.reject(new UnauthorizedException('Invalid password')) 
+      ? Promise.resolve(user)
+      : Promise.reject(new UnauthorizedException('Invalid password'))
     })
-    .catch(err => {
-      done(err, false)
-    })
+    .catch(err => Promise.reject(err))
   }
   
-  public async verify(req, payload, done) {
+  public async verify(payload) {
     return await this.userService.findOne({_id: payload.sub})
-    .then(signedUser=> done(null, signedUser))
-    .catch(err=> done('Invalid authorization', false)
-    )
+    .then(signedUser => Promise.resolve(signedUser))
+    .catch(err => Promise.reject(new UnauthorizedException("Invalid Authorization")))
   }
 
   public async createToken(signedUser) {
     const expiresIn = process.env.JWT_EXPIRATION, secretOrKey = process.env.SECRET_KEY;
     const user = { 
-      sub: signedUser._id, 
+      sub: signedUser._id,
       email: signedUser.email,
       role: signedUser.role,
       status: signedUser.status

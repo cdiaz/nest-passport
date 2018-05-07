@@ -1,10 +1,13 @@
-import { Controller, Get, Post, Put, Delete, Req, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Req, Body, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { IUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { AuthGuard } from '@nestjs/passport';
+import { callback } from '../auth/passport/jwt.strategy';
 
 @Controller('user')
+@UseGuards(AuthGuard('jwt', {session: false, callback}))
 export class UserController {
   constructor(
     private readonly userService: UserService
